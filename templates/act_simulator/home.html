@@ -1,0 +1,34 @@
+{% extends 'act_simulator/base.html' %}
+
+{% block content %}
+
+<div class = 'menu-box'>
+    <h2>Select Assessments</h2>
+    <p>
+        This free resource provides unlimited randomised ACT practise questions.<br>
+        This resource uses cookies to record:<br>
+        <ul>
+            <li>sub-test session length (unlimited)</li>
+            <li>number of questions attempted and correctly answered</li>
+            <li>average time taken to answer each question</li>
+        </ul>
+        Since the questions in each sub-test are randomised, you'll be less likely to see the same twice and can practice ad-nauseum!<br>
+        DISCLAIMER: The question archetypes in each sub-section are based on the official ACT practice resource, and only reflect the actual test to the extent that does.<br>
+    </p>
+    <br>
+    <hr>
+    <h3>Select which test you want to practise.</h3>
+    <div class='menu-container'>
+        <a href='/error_detection'>Error Detection</a>
+        <a href='/orientation'>Orientation</a>
+        <a href='/number_fluency'>Number fluency</a>
+        <a href='/word_rules'>Word Rules</a>
+        <a href='/deductive_reasoning'>Deductive Reasoning</a>
+    </div>
+    <div class='question-box'>
+        
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'act_simulator/base.html' %}
+
+{% block content %}
+
+<script>
+//Cookies dealing with time
+console.log(getCookie("time"));
+var start = Date.now()
+
+if (getCookie("time") != ''){//if cookie for timing exists
+    var sec = Number(getCookie('time'));//use that as value from which to count up
+} else {
+    var sec = 0;//start from zero
+}
+
+//Cookies dealing with scores
+if (getCookie("correct") != ''){//if cookie exists
+    var correct = Number(getCookie('correct'));//use that as value from which to count up
+} else {
+    var correct = 0;//start from zero
+}
+
+
+if (getCookie("total") != ''){//if cookie exists
+    var total = Number(getCookie('total'));//use that as value from which to count up
+} else {
+    var total = 0;//start from zero
+}
+
+var time = sec
+
+//var sec = 0;
+    function pad ( val ) { return val > 9 ? val : "0" + val; }
+    setInterval( function(){
+        document.getElementById("seconds").innerHTML=pad(++sec%60);
+        document.getElementById("minutes").innerHTML=pad(parseInt(sec/60,10));
+    }, 1000);
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+    }
+    }
+    return "";
+}
+</script>
+
+<div class = 'menu-box'>
+    <div class='title-button'>
+        <h2>{{assessment_title}}</h2>
+    </div>
+    <hr>
+    <h4>
+        {% for instruction in instructions %}
+        {{instruction}}<br>
+        {% endfor %}
+    </h4>
+
+    <div class='stats-grid'>
+        <div class='reset' onclick=reset()>Reset</div>
+        <div class = 'timer'>
+            <span id="minutes"></span>:<span id="seconds"></span>
+        </div>
+        <div class='stats-item'>
+            <div class = 'ratio'>
+                <span id="correct"></span>/<span id="total"></span> correct
+            </div>
+        </div>
+        <div class='stats-item'>
+            <div class = 'speed'>
+                <span id="speed"></span> seconds / mark
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class='question-container'>
+        <p class = 'rule-name'>Sentence One</p>
+        <div class = 'rule one' style='display:block'>{{rule_one}}</div>
+
+        <p class = 'rule-name'>Sentence Two</p>
+        <div class = 'rule two'style='display:block'>{{rule_two}}</div>
+        {% if prompt != '' %}
+        <p>{{prompt}}</p>
+        {% else %}
+        <br>
+        {% endif %}
+        <div class = 'item-grid-wrapper'>
+            <div class='item-grid' display = 'none'>
+                {% for item in items %}
+                    <div class = 'item' onclick=increment_click("{{item.indicator}}")> {{item.name}} </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class='next-button-wrapper'><div class='next' onclick=increment_click(null)>Next Step</div></div>
+    <div class='next-question-wrapper'><div class='next' onclick=next_question()>Next Question</div></div>
+
+</div>
+
+<script>
+populate();
+function populate(){
+    try{
+        document.getElementById('correct').innerHTML = correct.toString();
+    } catch(err){
+        document.getElementById('correct').innerHTML = '0';
+    }
+    try{
+        document.getElementById('total').innerHTML = total.toString();
+    } catch(err){
+        document.getElementById('total').innerHTML = '0';
+    }
+    try{
+        document.getElementById('speed').innerHTML = Math.round(time / correct);
+    } catch(err){
+        document.getElementById('speed').innerHTML = '0';
+    }
+}
+
+var clicks = 0;
+function increment_click(indicator) {
+    clicks = clicks + 1;
+    if (clicks == 1) {
+        document.getElementsByClassName("one")[0].style.display ='none';
+        document.getElementsByClassName("two")[0].style.display = "none";
+        document.getElementsByClassName("next-button-wrapper")[0].style.display = "none";
+        document.getElementsByClassName("item-grid-wrapper")[0].style.display = "block";
+        console.log(sec)
+    }
+    else if (clicks == 2) {
+        document.getElementsByClassName("item-grid-wrapper")[0].style.display = "none";
+        document.getElementsByClassName("next-question-wrapper")[0].style.display = "block";
+        console.log(sec)
+        total = total + 1
+        document.cookie = "total=" + total.toString();
+        if (indicator == 'correct'){
+            correct = correct + 1
+            document.cookie = "correct=" + correct.toString();
+        }else{
+            document.cookie = "correct=" + correct.toString();
+        }
+        document.getElementById('correct').innerHTML = correct.toString();
+        document.getElementById('total').innerHTML = total.toString();
+        time = sec
+        document.getElementById('speed').innerHTML = Math.round(time / correct);
+
+        
+        console.log(sec)
+    }
+}
+
+function next_question(){
+    //set timer cookie with current time
+    console.log('Just an int...');
+    var end = Date.now();
+    var total = Math.floor((end-start)/1000);
+    var str_sec = sec.toString();
+    var cookie_str = "time=" + str_sec;
+    document.cookie = cookie_str;
+    window.location.href = "/error_detection";
+}
+
+function reset(){
+    document.getElementById('seconds').innerHTML = 0;
+    document.getElementById('minutes').innerHTML = 0;
+    document.getElementById('correct').innerHTML = 0;
+    document.getElementById('total').innerHTML = 0;
+    document.getElementById('speed').innerHTML = 0;
+    document.getElementById('speed').innerHTML = 0;
+    document.cookie = "time=0";
+    document.cookie = "total=0";
+    document.cookie = "correct=0";
+    window.location.href = "/error_detection";
+}
+
+</script>
+
+
+
+
+{% endblock %}

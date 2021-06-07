@@ -1,0 +1,17 @@
+from django.shortcuts import render
+
+#path('admin/', admin.site.urls),
+def home(request):
+    return render(request, 'home.html', context)
+
+def error_detection(request):
+    return render(request, 'error_detection.html', context)
+
+def orientation(request):
+    return render(request, 'orientation.html', context)
+
+def word_rules(request):
+    return render(request, 'word_rules.html', context)
+
+def deductive_reasoning(request):
+    return render(request, 'deductive_reasoning.html', context)
