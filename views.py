@@ -534,7 +534,7 @@ def deductive_reasoning(request):
     def make_ordered_list(chosen):
         chosen_items = set()
         while len(chosen_items) != 3:
-            chosen_items.add(choose_from(item_lists[chosen]['items']))
+            chosen_items.add(choose_from(item_lists[chosen]['items']).capitalize())
         return tuple(chosen_items)
 
     def get_rules_data(three_ordered_items):

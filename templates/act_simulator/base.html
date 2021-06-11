@@ -109,7 +109,7 @@
 				height:min-content;
 			}
 			.reset{
-				background-color:blue;
+				background-color:rgb(23, 79, 184);
 				margin-left:auto;
 				margin-right:auto;
 				text-align: center;
@@ -120,6 +120,11 @@
 				font-size:1rem;
 				text-decoration: none;
 				cursor: pointer;
+				
+			}
+			.reset:hover{
+				background-color: rgb(0, 53, 226);
+				transition:200ms;
 			}
 			h4{
 				color:rgb(197, 0, 0);
@@ -223,12 +228,10 @@
 				border-color: grey;
 				transition: 200ms;
 			}
-			
-
-			
+						
 			/*next and question buttons*/
 			.next{
-				background-color:blue;
+				background-color:rgb(23, 79, 184);
 				text-align: center;
 				color: white;
 				border-radius: 5px;
@@ -236,7 +239,11 @@
 				font-size:1rem;
 				text-decoration: none;
 				cursor: pointer;
-				margin:3rem;
+				margin: 0.5em;
+			}
+			.next:hover{
+				background-color:rgb(0, 53, 226);
+				transition: 200ms;
 			}
 			.next a{
 				color: white;
@@ -248,12 +255,13 @@
 				margin-left:auto;
 				margin-right:auto;
 				display:block;
-				
+				margin-bottom:3rem;
 			}
 			.next-question-wrapper{
 				margin-left:auto;
 				margin-right:auto;
 				display:none;
+				margin-bottom:3rem;
 			}
 			@media only screen and (max-width: 660px) {
 					.home-link-wrapper{
@@ -363,7 +371,7 @@
 	<body>
 		<div class = 'top-banner'>
 			<div class='home-link-wrapper'>
-				<a class = 'home-link' href = '/'>
+				<a class = 'home-link' href = '../'>
 					<div class = 'act'>ACT</div>
 					<div class = 'pass-the-test' >PASS THE TEST</div>
 				</a>
