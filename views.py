@@ -242,6 +242,234 @@ def orientation(request):
     }
     return render(request, 'act_simulator/orientation.html', context)
 
+def reasoning_categories(request):
+    
+    main_dict = {
+        'living' : {
+                'Fish':('Cod', 'Haddock', 'Salmon', 'Tuna', 'Mackrel', 'Baracuda'),
+                'Tree':('Ash', 'Yew', 'Oak', 'Sycamore'),
+                'Bird':('Duck', 'Hawk', 'Sparrow', 'Eagle'),
+                'Vegetable':('Cabbage', 'Cucumber', 'Potato', 'Carrot', 'Brocoli', 'Cauliflower', 'Lettuce'),
+                'Flower':('Rose', 'Dandelion', 'Buttercup', 'Daffodil'),
+                'Insect':('Moth', 'Wasp', 'Mosquito', 'Ant', 'Beetle', 'Horsefly'),
+        },
+        'things' : {
+                'Tool':('Knife', 'Hammer', 'Screwdriver', 'File', 'Wrench', 'Spanner', 'Ruler'),
+                'Building':('House', 'Igloo', 'Theatre', 'Hospital', 'Flat', 'Castle', 'Bungalow'),
+                'Clothing':('Hat', 'Coat', 'Glove', 'Sock', 'Boot'),
+                'Sport':('Cricket', 'Hockey', 'Rugby', 'Cycling', 'Swimming'),
+                'Gas':('Oxygen', 'Hydrogen', 'Nitrogen', 'Helium'),
+                'Drink':('Water', 'Lemonade', 'Cocoa', 'Juice', 'Milk'),
+                'Metal':('Copper', 'Steel', 'Lead', 'Iron', 'Mercury'),
+                'Transport':('Car', 'Truck', 'Train', 'Helicopter', 'Taxi', 'Bicycle', 'Motorbike'),
+        }
+    }
+
+    def choose_from(iterable):
+        if type(iterable) is dict:
+            iterable = [key for key, value in iterable.items()]        
+        return iterable[randint(0, len(iterable)-1)]
+
+    def two_from(category, disallowed = []):
+        found = set()
+        while len(found) != 2:
+            new = choose_from(category)
+            if new not in disallowed:
+                found.add(new)
+        cat_list = []
+        for item in found:
+            cat_dict = {}
+            cat_dict[item] = choose_from(category[item])
+            cat_list.append(cat_dict)
+        return tuple(cat_list)
+
+    def make_items_statement_and_order(items_dict):#where items dict is a tuple of two key value pairs
+        #select between above/below, before/after
+        positions = ('before', 'after') if randint(0,1) == 0 else ('above', 'below')
+        categories = []
+        for item in items_dict:#putting category keys into lists for use in statements
+            for key, value in item.items():
+                categories.append(key)
+
+        if randint(0,1):#statement uses first item
+            statement = f"{categories[0]} {positions[0]} {categories[1]}" 
+        else:#statement uses second item
+            statement = f"{categories[1]} {positions[1]} {categories[0]}" 
+            
+        ordered_items = []
+        for item in items_dict:#putting category values into lists for use in ordered_tuples to build answers
+            for key, value in item.items():
+                ordered_items.append(value)
+        return statement, categories, ordered_items
+
+    def make_incorrect_answers(cats_in_order, order):#correct order is ordered list of 4 items  
+        #make a list of all categories in correct order so we can mess with it
+        #make seven incorrect answers:
+        #1. reverse living and thing
+        incorrect1 = [
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            ]
+        #2. for living, reverse cats
+        incorrect2 = [
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            ]
+        #3. for things reverse cats
+        incorrect3 = [
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            ]
+        #4. for living, non matching cats
+        #replace one category in first:
+        while True:
+            new = choose_from(main_dict[order[0]])
+            if new not in cats_in_order[:2]:
+                break
+        if randint(0,1) == 0:
+            cats_in_order[0] = new
+        else:
+            cats_in_order[1] = new
+        incorrect4 = [
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            ]
+        #5. replace one category in second
+        while True:
+            new = choose_from(main_dict[order[1]])
+            if new not in cats_in_order[2:]:
+                break
+        if randint(0,1) == 0:
+            cats_in_order[2] = new
+        else:
+            cats_in_order[3] = new
+        incorrect5 = [
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            ]
+        
+        #6. reverse both cats
+        incorrect6 = [
+            choose_from(main_dict[order[0]][cats_in_order[1]]),
+            choose_from(main_dict[order[0]][cats_in_order[0]]),
+            choose_from(main_dict[order[1]][cats_in_order[3]]),
+            choose_from(main_dict[order[1]][cats_in_order[2]]),
+            ]
+        
+        #7. random cats
+        if randint(0,1) == 0:
+            incorrect7 = [
+                choose_from(main_dict[order[0]][cats_in_order[randint(0,1)]]),
+                choose_from(main_dict[order[1]][cats_in_order[2]]),
+                choose_from(main_dict[order[1]][cats_in_order[3]]),
+                choose_from(main_dict[order[0]][cats_in_order[randint(0,1)]]),
+                ]
+        else:
+            incorrect7 = [
+                choose_from(main_dict[order[1]][cats_in_order[randint(2,3)]]),
+                choose_from(main_dict[order[0]][cats_in_order[0]]),
+                choose_from(main_dict[order[0]][cats_in_order[1]]),
+                choose_from(main_dict[order[1]][cats_in_order[randint(2,3)]]),
+                ]
+
+        return (incorrect1, incorrect2, incorrect3, incorrect4, incorrect5, incorrect6, incorrect7)
+
+    def make_statements_and_correct_and_incorrect():
+        living_dicts = two_from(main_dict['living'])
+        things_dicts = two_from(main_dict['things'])
+        
+        living_statement, living_cats, living_items = make_items_statement_and_order(living_dicts)
+        things_statement, things_cats, things_items = make_items_statement_and_order(things_dicts)
+        positions = ('before', 'after') if randint(0,1) == 0 else ('above', 'below')
+        #decide whether living or things comes first and generate ordered answer list accordingly
+        order = ('living', 'things') if randint(0,1) == 0  else ('things','living')
+
+        cats_in_order = []
+        
+        if order[0] == 'living':
+            correct_order = []
+            for item in living_items:
+                correct_order.append(item)
+            for item in things_items:
+                correct_order.append(item)
+
+            cats_in_order = []
+            for item in living_cats:
+                cats_in_order.append(item)
+            for item in things_cats:
+                cats_in_order.append(item)
+
+            if randint(0,1):
+                living_things_statement = f'Living {positions[0]} Things'
+            else:
+                living_things_statement = f'Things {positions[1]} Living'
+
+        else:
+            correct_order = []
+            for item in things_items:
+                correct_order.append(item)
+            for item in living_items:
+                correct_order.append(item)
+
+            cats_in_order = []
+            for item in things_cats:
+                cats_in_order.append(item)
+            for item in living_cats:
+                cats_in_order.append(item)
+
+            if randint(0,1):
+                living_things_statement = f'Things {positions[0]} Living'
+            else:
+                living_things_statement = f'Living {positions[1]} Things'
+        
+        print(correct_order)
+        
+        incorrect = make_incorrect_answers(cats_in_order, order)
+
+        items = []
+        for item in incorrect:
+            items.append({'name':{'one':item[0], 'two':item[1], 'three':item[2], 'four':item[3]}, 'indicator':'incorrect'})
+        items.append({'name':{'one':correct_order[0], 'two':correct_order[1], 'three':correct_order[2], 'four':correct_order[3]}, 'indicator':'correct'})
+        shuffle(items)
+
+        if randint(0,1):
+            rule_one = living_statement
+            rule_three = things_statement
+        else:
+            rule_three = living_statement
+            rule_one = things_statement
+        rule_two = living_things_statement
+        
+        return rule_one, rule_two, rule_three, items
+
+    rule_one, rule_two, rule_three, items = make_statements_and_correct_and_incorrect()
+    instructions = ''
+    prompt = ''
+
+    context = {
+            'assessment_title':'Reasoning categories',
+            'instructions':instructions,
+            'rule_one':rule_one,
+            'rule_two':rule_two,
+            'rule_three':rule_three,
+            'prompt':prompt,
+            'items':items,
+            'link':'reasoning_categories',
+        }
+    print(items)
+    return render(request, 'act_simulator/reasoning_categories.html', context)
+
+
 def number_fluency(request):
     '''
     two sums displayed one by one
@@ -371,7 +599,7 @@ def number_fluency(request):
 
 def word_rules(request):
     word_dict = {
-            'fish':('cod', 'hadock', 'salmon', 'tuna', 'mackrel'),
+            'fish':('cod', 'hadock', 'salmon', 'tuna', 'mackrel', 'baracuda'),
             'tree':('ash', 'yew', 'oak', 'sycamore'),
             'country':('France', 'Germany', 'Italy', 'Scotland', 'Ireland', 'Wales', 'England', 'Belgium'),
             'vegetable':('cabbage', 'cucumber', 'potato', 'carrot', 'brocoli', 'cauliflower', 'lettuce'),
@@ -489,7 +717,7 @@ def deductive_reasoning(request):
             'valid':('distance','time')
             },
         'fish':{
-            'items':('cod', 'trout', 'salmon', 'pike', 'tuna'),
+            'items':('cod', 'trout', 'salmon', 'pike', 'tuna', 'baracuda'),
             'valid':('distance','time','size','speed')
             },
         'terrain':{
@@ -628,3 +856,4 @@ def deductive_reasoning(request):
 
     return render(request, 'act_simulator/deductive_reasoning.html', context)
 
+#alphabet test

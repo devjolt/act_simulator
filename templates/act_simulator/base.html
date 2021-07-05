@@ -136,8 +136,8 @@
 				grid-template-columns: auto;
 				row-gap: 0px;
 				min-height:13rem;
-				margin-left:10% ;
-				margin-right:10% ;
+				margin-left:5% ;
+				margin-right:5% ;
 				margin-bottom:1%;
 				padding-left: 1rem;
 				padding-right: 1rem;
@@ -228,7 +228,39 @@
 				border-color: grey;
 				transition: 200ms;
 			}
-						
+			
+			.reasoning-categories-item-grid-container{
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.reasoning-categories-grid{
+				display:grid;
+				grid-template-columns: auto auto auto auto;
+			}
+			.reasoning-categories-item-wrapper{
+				display:grid;
+				grid-template-columns: auto;
+				background-color: white;
+				border-style: solid;
+				border-width: 4px;
+				border-color: rgb(226, 226, 226);
+				text-align: center;
+				margin:2px;
+				padding:1px;
+				width: 100px;
+				font-size: 1.2rem;
+				line-height: 30px;
+				transition: 200ms;
+			}
+			.reasoning-categories-item-wrapper:hover{
+				cursor: pointer;
+				border-color: grey;
+				transition: 200ms;
+			}
+			.reasoning-categories-list-item{
+				margin:1px;
+			}
+
 			/*next and question buttons*/
 			.next{
 				background-color:rgb(23, 79, 184);
@@ -360,7 +392,18 @@
 					font-size: 3rem;
 					line-height: 40px;
 					transition: 200ms;
-			}
+				}
+				.reasoning-categories-grid{
+					display:grid;
+					grid-template-columns: auto auto auto;
+				}
+				.reasoning-categories-item-wrapper{
+					font-size: 1rem;
+				}
+				.reasoning-categories-list-item{
+					margin: -5;
+					padding: -5;
+				}
 				
 			}
 		

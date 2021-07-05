@@ -8,4 +8,5 @@ urlpatterns = [
     path('number_fluency/', views.number_fluency, name='number_fluency'),    
     path('word_rules/', views.word_rules, name='word_rules'),    
     path('deductive_reasoning/', views.deductive_reasoning, name='deductive_reasoning'),
+    path('reasoning_categories/', views.reasoning_categories, name='reasoning_categories'),
 ]
