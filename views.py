@@ -441,6 +441,7 @@ def reasoning_categories(request):
             items.append({'name':{'one':item[0], 'two':item[1], 'three':item[2], 'four':item[3]}, 'indicator':'incorrect'})
         items.append({'name':{'one':correct_order[0], 'two':correct_order[1], 'three':correct_order[2], 'four':correct_order[3]}, 'indicator':'correct'})
         shuffle(items)
+        shuffle(items)
 
         if randint(0,1):
             rule_one = living_statement
@@ -453,9 +454,12 @@ def reasoning_categories(request):
         return rule_one, rule_two, rule_three, items
 
     rule_one, rule_two, rule_three, items = make_statements_and_correct_and_incorrect()
-    instructions = ''
+    instructions = (
+        "Read and memorise the rules; click the 'Next Step' button and the rules will disappear.",
+        "Look at the lists of items and identify the one which matches the rules you read.",
+        "Select your answer by clicking the correct list."
+    )
     prompt = ''
-
     context = {
             'assessment_title':'Reasoning categories',
             'instructions':instructions,
@@ -478,7 +482,7 @@ def number_fluency(request):
     def generate_top_bottom():
         #top and bottom must be within 5 of each other
         top = randint(16, 50)
-        bottom = randint(top, top + 5) if randint(0,1)==0 else randint(top-5, top)
+        bottom = randint(top, top + 3) if randint(0,1)==0 else randint(top-3, top)
         return top, bottom#seed is top in this case
 
     def correct_answer(top, bottom):
