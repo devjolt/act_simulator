@@ -432,8 +432,6 @@ def reasoning_categories(request):
             else:
                 living_things_statement = f'Living {positions[1]} Things'
         
-        print(correct_order)
-        
         incorrect = make_incorrect_answers(cats_in_order, order)
 
         items = []
@@ -470,7 +468,6 @@ def reasoning_categories(request):
             'items':items,
             'link':'reasoning_categories',
         }
-    print(items)
     return render(request, 'act_simulator/reasoning_categories.html', context)
 
 
