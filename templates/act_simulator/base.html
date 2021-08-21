@@ -84,12 +84,12 @@
 				border-color:rgb(226, 226, 226);
 				border-radius: 5px;
 			}
-			/* timer, counter, average */
+			/* timer, counter, percent, average */
 			.stats-grid{
 				display:grid;
-				grid-template-columns: auto 20% 20% 20%  ;
+				grid-template-columns: auto 15% 15% 15% 15%  ;
 				height: min-content;
-				text-align: right;
+				text-align: center;
 			}
 			.stats-item{
 				margin:0%;
@@ -420,9 +420,13 @@
 				</a>
 			</div>
 		</div>
-		{% block content %}
 
-        {% endblock %}
+		{% block head_javascript %}
+		{% endblock %}
+
+		{% block content %}
+		{% endblock %}
+
 	</body>
 </html>
 

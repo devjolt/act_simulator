@@ -1,29 +1,27 @@
 {% extends 'act_simulator/questions.html' %}
 
+
+
 {% block question %}
     <script>
-        var question_link = "../orientation"
+        var question_link = "../number_fluency"
     </script>
-    <div class='question-container'>
-        <p class = 'rule-name'>Sentence One</p>
-        <div class = 'rule one' style='display:block'>{{rule_one}}</div>
 
-        <p class = 'rule-name'>Sentence Two</p>
-        <div class = 'rule two'style='display:block'>{{rule_two}}</div>
+    <div class='question-container'>
+        <p class = 'rule-name'>Step One</p>
+        <div class = 'rule one' style = 'display:block'>{{rule_one}}</div>
+
+        <p class = 'rule-name'>Step Two</p>
+        <div class = 'rule two' style = 'display:none'>{{rule_two}}</div>
         
         <p>{{prompt}}</p>
-        
-        <div class = 'orientation-item-grid-container' style='display:none'>
-            <div class = 'orientation-item-grid'>
+        <div class = 'item-grid-wrapper'>
+            <div class='item-grid' display = 'none'>
                 {% for item in items %}
-                    <div class='orientation-item-wrapper' onclick=increment_click("{{item.indicator}}") >
-                        <div>{{item.name.top}}</div>
-                        <div>{{item.name.bottom}}</div>
-                    </div>
+                    <div class = 'item' onclick=increment_click("{{item.indicator}}")>{{item.name}}</div>
                 {% endfor %}
             </div>
         </div>
-
     </div>
 
     <div class='next-button-wrapper'><div class='next' onclick=increment_click(null)>Next Step</div></div>
@@ -32,35 +30,39 @@
 </div>
 {% endblock %}
 
+
 {% block question_javascript %}
 <script>
 
 var clicks = 0;
 function increment_click(indicator) {
     clicks = clicks + 1;
-    console.log(clicks)
     if (clicks == 1) {
         document.getElementsByClassName("one")[0].style.display ='none';
-        document.getElementsByClassName("two")[0].style.display = "none";
-        document.getElementsByClassName("next-button-wrapper")[0].style.display = "none";
-        document.getElementsByClassName("orientation-item-grid-container")[0].style.display = "block";
+        document.getElementsByClassName("two")[0].style.display = "block";
         console.log(sec)
     }
     else if (clicks == 2) {
-       question_end(indicator, "orientation-item-grid-container");
-    }    
+        document.getElementsByClassName("two")[0].style.display = "none";
+        document.getElementsByClassName("next-button-wrapper")[0].style.display = "none";
+        document.getElementsByClassName("item-grid-wrapper")[0].style.display = "block";
+        console.log(sec)
+    }
+    else if (clicks == 3) {
+        question_end(indicator, "item-grid-wrapper");
+    }
 }
 
 function reset(){
     document.getElementById('seconds').innerHTML = 0;
     document.getElementById('minutes').innerHTML = 0;
     document.getElementById('correct').innerHTML = 0;
-    document.getElementById('total').innerHTML = 0;
+    document.getElementById('total').innerHTML = 0; 
     document.getElementById('speed').innerHTML = 0;
     document.cookie = "time=0";
     document.cookie = "total=0";
     document.cookie = "correct=0";
-    window.location.href = "../orientation";
+    window.location.href = "../number_fluency";
 }
 
 </script>

@@ -596,7 +596,7 @@ def number_fluency(request):
         'items':items,
         'link':'number_fluency'
         }
-    return render(request, 'act_simulator/number_fluency_word_rules.html', context)
+    return render(request, 'act_simulator/number_fluency.html', context)
 
 def word_rules(request):
     word_dict = {
@@ -704,7 +704,7 @@ def word_rules(request):
         'link':'word_rules'
     }
     
-    return render(request, 'act_simulator/number_fluency_word_rules.html', context)
+    return render(request, 'act_simulator/word_rules.html', context)
 
 def deductive_reasoning(request):
 
