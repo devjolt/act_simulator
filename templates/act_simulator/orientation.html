@@ -123,7 +123,7 @@ function populate(){
         document.getElementById('total').innerHTML = '0';
     }
     try{
-        document.getElementById('speed').innerHTML = Math.round(time / correct);
+        document.getElementById('speed').innerHTML = Math.round((time / correct)*10)/10;
     } catch(err){
         document.getElementById('speed').innerHTML = '0';
     }
@@ -154,7 +154,7 @@ function increment_click(indicator) {
         document.getElementById('correct').innerHTML = correct.toString();
         document.getElementById('total').innerHTML = total.toString();
         time = sec
-        document.getElementById('speed').innerHTML = Math.round(time / correct);
+        document.getElementById('speed').innerHTML = Math.round((time / correct)*10)/10;
 
         
         console.log(sec)
