@@ -1,4 +1,4 @@
-{% extends 'act_simulator/base.html' %}
+{% extends 'act_simulator/questions.html' %}
 
 {% block question %}
     <script>
@@ -7,13 +7,13 @@
 
     <div class='question-container'>
         <p class = 'rule-name'>Sentence One</p>
-        <div class = 'rule one' style='display:block'>{{rule_one}}</div>
+        <strong><div class = 'rule one' style='display:block'>{{rule_one}}</div></strong>
 
         <p class = 'rule-name'>Sentence Two</p>
-        <div class = 'rule two'style='display:block'>{{rule_two}}</div>
+        <strong><div class = 'rule two'style='display:block'>{{rule_two}}</div></strong>
         
-        <p class = 'rule-name'>Sentence Two</p>
-        <div class = 'rule three'style='display:block'>{{rule_three}}</div>
+        <p class = 'rule-name'>Sentence Three</p>
+        <strong><div class = 'rule three'style='display:block'>{{rule_three}}</div></strong>
         
 
         <p>{{prompt}}</p>

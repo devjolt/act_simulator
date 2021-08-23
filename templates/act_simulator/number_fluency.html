@@ -9,12 +9,12 @@
 
     <div class='question-container'>
         <p class = 'rule-name'>Step One</p>
-        <div class = 'rule one' style = 'display:block'>{{rule_one}}</div>
+        <strong><div class = 'rule one' style = 'display:block'>{{rule_one}}</div></strong>
 
         <p class = 'rule-name'>Step Two</p>
-        <div class = 'rule two' style = 'display:none'>{{rule_two}}</div>
+        <strong><div class = 'rule two' style = 'display:none'>{{rule_two}}</div></strong>
         
-        <p>{{prompt}}</p>
+        <p>{{prompt}}?</p>
         <div class = 'item-grid-wrapper'>
             <div class='item-grid' display = 'none'>
                 {% for item in items %}
