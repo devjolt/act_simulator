@@ -569,7 +569,9 @@ def number_fluency(request):
             print('indicators: ',top_indicator, bottom_indicator, same_indicator)
             top_exp = generate_expression(top)
             print('top expression: ', top_exp)
-            bottom_exp = generate_expression(bottom)
+            bottom_exp = top_exp # prevent bottom from being the same as top
+            while bottom_exp == top_exp:#...
+                bottom_exp = generate_expression(bottom)#...
             print('bottom expression: ', bottom_exp)
             break
         except ValueError:
